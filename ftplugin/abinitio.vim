@@ -14,9 +14,8 @@ endif
 let b:did_ftplugin = 1
 
 setlocal textwidth=0
-setlocal commentstring=// %s
+setlocal commentstring=//%s
 setlocal formatoptions=tcqro
-setlocal foldmethod=syntax
 
 " Change the browse dialog on Win32 to show mainly PowerShell-related files
 if has("gui_win32")

@@ -120,7 +120,8 @@ syn region abVectorTypeEnd matchgroup=abVectorType start="\<vector\>" end="\<end
 syn region abRecordTypeEnd matchgroup=abRecordDef start="\[\s*\<record\>" end="\]" contains=ALLBUT,@abNotTop skipempty transparent fold
 syn region abRecordTypeEnd matchgroup=abRecordType start="\<record\>" end="\<end\>" contains=ALLBUT,@abNotTop skipempty transparent fold
 syn region abSwitchEnd matchgroup=abSwitch start="\<switch\>" end="\<end\>" contains=ALLBUT,@abNotTop skipempty transparent fold
-syn region abBeginEnd  matchgroup=abBlock start="\<begin\>" end="\<end\>" contains=ALLBUT,@abNotTop skipempty transparent fold
+syn region abBeginEnd  matchgroup=abBlock start="\<begin\>" end="\<end\>" contains=ALLBUT,@abNotTop skipempty transparent fold 
+
 syn sync fromstart
 
 " highlight abKeywords guifg=blue
