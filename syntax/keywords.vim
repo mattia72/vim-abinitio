@@ -1,3 +1,6 @@
+"
+" Most used Ab Initio keywords
+"
 
 syn keyword abBuiltInFunc accumulation avg close_output concatenation copy_data count 
 syn keyword abBuiltInFunc final_log_output first input_connected last log_error 
