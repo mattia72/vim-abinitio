@@ -7,7 +7,7 @@ Or even better, use [neobundle](http://github.com/Shougo/neobundle.vim "Neobundl
 ```
 NeoBundleLazy 'mattia72/vim-abinitio'
 ```
-than add this line in your auto commands section:
+then add this line in your auto commands section:
 ```
 autocmd FileType abinitio NeoBundleSource vim-abinitio
 ```
