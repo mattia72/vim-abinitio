@@ -52,7 +52,7 @@ syn match  abRecordDef  "\<\(\[\s*record\|\]\)\>"
 syn match  abVectorDef  "\<\(\[\s*vector\|\]\)\>"
 syn match  abRecordType "\<\(record\|end\)\>"
 syn match  abVectorType "\<\(vector\|end\)\>"
-syn match  abSwitch     "\<\(switch\|end\)\>"
+syn match  abSwitchBlock     "\<\(switch\|end\)\>"
 syn match  abBlock      "\<\(begin\|end\)\>"
 
 syn keyword abConstant NULL
@@ -115,11 +115,11 @@ syn region abComment   matchgroup=abCommentStart start="/\*" end="\*/" contains=
 syn region  abString   start=+L\="+ skip=+\\\\\|\\"+ end=+"+ contains=abSpecial,@Spell extend
 syn region  abString   start=+L\='+ skip=+\\\\\|\\'+ end=+'+ contains=abSpecial,@Spell extend
 
-syn region abVectorTypeEnd matchgroup=abVectorDef start="\[\s*\<vector\>" end="\]" contains=ALLBUT,@abNotTop skipempty transparent fold
-syn region abVectorTypeEnd matchgroup=abVectorType start="\<vector\>" end="\<end\>" contains=ALLBUT,@abNotTop skipempty transparent fold
-syn region abRecordTypeEnd matchgroup=abRecordDef start="\[\s*\<record\>" end="\]" contains=ALLBUT,@abNotTop skipempty transparent fold
-syn region abRecordTypeEnd matchgroup=abRecordType start="\<record\>" end="\<end\>" contains=ALLBUT,@abNotTop skipempty transparent fold
-syn region abSwitchEnd matchgroup=abSwitch start="\<switch\>" end="\<end\>" contains=ALLBUT,@abNotTop skipempty transparent fold
+syn region abVector matchgroup=abVectorDef start="\[\s*\<vector\>" end="\]" contains=ALLBUT,@abNotTop skipempty transparent fold
+syn region abVector matchgroup=abVectorType start="\<vector\>" end="\<end\>" contains=ALLBUT,@abNotTop skipempty transparent fold
+syn region abRecord matchgroup=abRecordDef start="\[\s*\<record\>" end="\]" contains=ALLBUT,@abNotTop skipempty transparent fold
+syn region abRecord matchgroup=abRecordType start="\<record\>" end="\<end\>" contains=ALLBUT,@abNotTop skipempty transparent fold
+syn region abSwitch matchgroup=abSwitchBlock start="\<switch\>" end="\<end\>" contains=ALLBUT,@abNotTop skipempty transparent fold
 syn region abBeginEnd  matchgroup=abBlock start="\<begin\>" end="\<end\>" contains=ALLBUT,@abNotTop skipempty transparent fold 
 
 syn sync fromstart
@@ -127,20 +127,20 @@ syn sync fromstart
 " highlight abKeywords guifg=blue
 " Define the default highlighting.
 " Only used when an item doesn't have highlighting yet
-"if version >= 508 || !exists("did_abinitio_syntax_inits")
-  "if version < 508
-    "let did_abinitio_syntax_inits = 1
+if version >= 508 || !exists("did_abinitio_syntax_inits")
+  if version < 508
+    let did_abinitio_syntax_inits = 1
     command -nargs=+ HiLink hi link <args>
-  "else
-    "command -nargs=+ HiLink hi def link <args>
-  "endif
+  else
+    command -nargs=+ HiLink hi def link <args>
+  endif
   HiLink abTodo        Todo         
   HiLink abLineComment Comment      
   HiLink abComment     Comment      
   HiLink abCommentStart    Comment      
   HiLink abKeywords    Statement    
   HiLink abBlock       PreProc " Normal "Delimiter "Statement    
-  HiLink abSwitch      Statement 
+  HiLink abSwitchBlock Statement 
   HiLink abRecordDef   Type 
   HiLink abRecordType  Type 
   HiLink abVectorDef   Type 
@@ -160,81 +160,8 @@ syn sync fromstart
   HiLink abPreProc     PreProc      
   HiLink abSpecial     SpecialChar
   delcommand HiLink
-"endif
+endif
 
 let b:current_syntax = "abinitio"
-
-"__KEYTYPE__ 
-"for
-"iso_easteuropean 
-"package 
-"and  
-"ibm 
-"iso_greek 
-"packed 
-"ascii 
-"ieee 
-"iso_hebrew 
-"real 
-"begin  
-"if  
-"iso_latin 
-"record 
-"big 
-"include  
-"iso_latin_1  
-"reinterpret_as 
-"char 
-"int  
-"iso_latin_2 
-"shift_jis  
-"constant 
-"integer  
-"iso_latin_3 
-"short 
-"date 
-"iso_8859_1 
-"iso_latin_4 
-"signed 
-"datetime 
-"iso_8859_2  
-"iso_turkish  
-"string 
-"decimal 
-"iso_8859_3 
-"jis_201 
-"switch 
-"delimiter  
-"iso_8859_4 
-"let  
-"this_record 
-"double 
-"iso_8859_5 
-"little 
-"type 
-"ebcdic 
-"iso_8859_6  
-"long  
-"unicode 
-"else 
-"iso_8859_7 
-"member 
-"union 
-"end  
-"iso_8859_8  
-"metadata 
-"unsigned 
-"endian 
-"iso_8859_9 
-"not  
-"utf8 
-"euc_jis  
-"iso_arabic 
-"NULL 
-"void 
-"float 
-"iso_cyrillic 
-"or 
-"while 
 
 " vim: ts=8
