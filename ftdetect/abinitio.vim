@@ -6,3 +6,4 @@
 " Vim Script Page:    
 
 autocmd BufNewFile,BufRead *.dml set filetype=abinitio
+autocmd BufNewFile,BufRead *.xfr set filetype=abinitio
