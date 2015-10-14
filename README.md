@@ -17,11 +17,13 @@ So the plugin will loaded only if you open a *.dml file or call `set filetype=ab
 ![Screenshot](/../screenshot/screenshot.png?raw=true "Screenshot")
 
 ## Indent
-Indentation works well on most cases, but there are some bugs yet.
+Indentation works well (in most cases :)) 
+
+## Matchit support
+`b:match_words` contains matching words to jump between "begin" and "end" or
+"record" and "end" with %
 
 ## Thanks
 * for the first inspiration: https://sites.google.com/site/abinitiobyte/
 * for this indent script howto: http://psy.swansea.ac.uk/staff/Carter/Vim/vim_indent.htm
-
-
 
