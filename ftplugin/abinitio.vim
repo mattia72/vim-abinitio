@@ -13,6 +13,11 @@ endif
 " Don't load another plug-in for this buffer
 let b:did_ftplugin = 1
 
+let b:end_match_words = '\%(\<begin\>\|\%(\[\)\@<!\s*\<record\>\|\<switch\>\)'
+
+" For matchit plugin to jump with % to the matching word:
+let b:match_words = b:end_match_words.':\<end\>,\<if\>:\<else\>'
+
 setlocal textwidth=0
 setlocal commentstring=//%s
 setlocal formatoptions=tcqro
