@@ -18,6 +18,7 @@ syn keyword abOperator and
 syn keyword abOperator not
 
 syn match abSpecial  display contained "\\\(x\x\+\|\o\{1,3}\|.\|$\)"
+syn match abSpecial  display contained '%\(?:\d+\$\)\?[dfsu]'
 
 
 " Integer with - + or nothing in front
@@ -42,14 +43,16 @@ syn match abVariable "[^.]\<\h[a-zA-Z0-9#_]*\>"ms=s+1
 syn match abColumnName "\.\<\h[a-zA-Z0-9#_]*\>"ms=s+1
 
 syn keyword abType vector type decimal float string date datetime int integer double short signed union unsigned 
-syn keyword abType real long void big little skipwhite nextgroup=abParen
+syn keyword abType real long void skipwhite nextgroup=abParen
 
 syn match abPort "\<\(in\|out\|error\|\(file\)*reject\|log\)\d*\>" 
 
 syn keyword abLet let skipwhite nextgroup=abType
 
+syn match  abUnionDef    "\<\(\[\s*union\|\]\)\>"
 syn match  abRecordDef  "\<\(\[\s*record\|\]\)\>"
 syn match  abVectorDef  "\<\(\[\s*vector\|\]\)\>"
+syn match  abUnionType   "\<\(union\|end\)\>"
 syn match  abRecordType "\<\(record\|end\)\>"
 syn match  abVectorType "\<\(vector\|end\)\>"
 syn match  abSwitchBlock     "\<\(switch\|end\)\>"
@@ -59,7 +62,7 @@ syn keyword abConstant NULL
 
 syn keyword abCodePage iso_8859_1 iso_8859_2 iso_8859_3 iso_8859_4 iso_8859_5 iso_8859_6 iso_8859_7 iso_8859_8 iso_8859_9 
 syn keyword abCodePage iso_arabic iso_cyrillic iso_easteuropean iso_turkish iso_greek iso_hebrew iso_latin_1 iso_latin_2 iso_latin_3 iso_latin_4 jis_201
-syn keyword abCodePage ascii ebcdic endian euc_jis ibm ieee unicode utf8 
+syn keyword abCodePage ascii ebcdic endian euc_jis ibm ieee unicode utf8 big little 
 
 syn keyword abComponent reformat join rollup normalize denormalize scan 
 
@@ -137,13 +140,15 @@ if version >= 508 || !exists("did_abinitio_syntax_inits")
   HiLink abTodo        Todo         
   HiLink abLineComment Comment      
   HiLink abComment     Comment      
-  HiLink abCommentStart    Comment      
+  HiLink abCommentStart Comment      
   HiLink abKeywords    Statement    
-  HiLink abBlock       PreProc " Normal "Delimiter "Statement    
+  HiLink abBlock       PreProc
   HiLink abSwitchBlock Statement 
-  HiLink abRecordDef   Type 
+  HiLink abUnionDef     Structure 
+  HiLink abUnionType    Type 
+  HiLink abRecordDef   Structure 
   HiLink abRecordType  Type 
-  HiLink abVectorDef   Type 
+  HiLink abVectorDef   Structure 
   HiLink abVectorType  Type 
   HiLink abBuiltInFunc Function    
   HiLink abPort        Type
@@ -157,6 +162,7 @@ if version >= 508 || !exists("did_abinitio_syntax_inits")
   HiLink abString      String       
   HiLink abRepeat      Repeat       
   HiLink abType        Type         
+  HiLink abCodePage    Type         
   HiLink abPreProc     PreProc      
   HiLink abSpecial     SpecialChar
   delcommand HiLink
