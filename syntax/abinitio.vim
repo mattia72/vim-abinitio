@@ -1,12 +1,13 @@
-" Vim syntax file
-" Language:           Ab Initio Data Manipulating Language
-" Maintainer:         Mattia72
-" Version:            1.0
-" Project Repository: https://github.com/mattia72/vim-abinitio
-" Vim Script Page:    
+"=============================================================================
+" File:          abinitio.vim
+" Author:        Mattia72 
+" Description:   Vim syntax file for Ab Initio Data Manipulating Language   
+" Created:       24 okt. 2015
+" Project Repo:  https://github.com/Mattia72/vim-abinitio
+"=============================================================================
 
 if exists("b:current_syntax")
-"  finish
+  finish
 endif
 
 syn case match
