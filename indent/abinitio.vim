@@ -17,7 +17,7 @@ setlocal indentkeys&
 setlocal indentkeys+==end,==begin,==;
 setlocal indentkeys+==if,==else,==switch,==case,==default,
 setlocal indentkeys+==while,==for 
-setlocal indentkeys+==vector,==record,==type
+setlocal indentkeys+==vector,==record,==union,==type
 
 setlocal cindent
 
@@ -42,7 +42,7 @@ endfunction
 
 function! s:RemoveComment(line)
   let prev_unc_line =  substitute(a:line, s:c_comment, "", "")
-  "" echom "RemCom: ".substitute(prev_unc_line, s:cpp_comment, "", "") 
+  "" "echom "RemCom: ".substitute(prev_unc_line, s:cpp_comment, "", "") 
   return substitute(prev_unc_line, s:cpp_comment, "", "")
 endfunction
 
@@ -79,8 +79,9 @@ function! s:GetMatchingElemLineNum( line_num, start_element, end_element )
 endfunction
 
 " words in line after which we should indent
-let s:ind_block_words = join(['let','type','record','vector','enum'],'\>\|')
+let s:ind_block_words = join(['let','type','record','vector','union'],'\>\|')
 
+" words after one line should be indented if not a block
 let s:ind_line_words = join([ 'if', 'else', 
                             \ 'for', 'while',
                             \ 'case','default'], '\>\|')
@@ -115,10 +116,15 @@ function! GetAbinitioIndent( line_num )
   "echom ' ---prev_unc_line: '.prev_unc_line
   if prev_unc_line !~# '\%(;\|,\|\<end\>\)\s*$'
     "echom 'prev line not ended with ; or , or with end;?' 
-    if prev_unc_line =~ '^\s*\%(begin\>\|'.s:ind_line_words.'\>\|'.s:ind_block_words.'\>\)'
-      "echom 'prev line started with: '.'^\s*\%(begin\>\|'.s:ind_line_words.'\>\|'.s:ind_block_words.'\>\)'
+    if prev_unc_line =~ '^\s*\%(begin\>\|'.s:ind_line_words.'\>\)\|\%(\[*'.s:ind_block_words.'\>\)' 
+      "echom 'prev line started with: '.'^\s*\%(begin\>\|'.s:ind_line_words.'\>\)\|\%(\[*'.s:ind_block_words.'\>\)'
       let shift_val += &shiftwidth
     endif
+	" Todo: indent to matching parenthesis
+	elseif this_unc_line =~ '\%(^[^\[]*\]\)\|\%(^[^(]*)\)' 
+    "echom 'prev line ended with ; or , or with end, but closing parenthesis' 
+		"let matching_elem_line_num = s:GetMatchingElemLineNum(a:line_num ,'\[', '\]') 
+		"let this_line_indent = indent(matching_elem_line_num)
   endif
 
   " begin
@@ -126,12 +132,13 @@ function! GetAbinitioIndent( line_num )
       return this_line_indent
   endif
 
-  " begin/record/switch ... end
+  " begin/vector/union/record/switch ... end
   if this_unc_line =~ '^\s*end\>\s*;\?' 
     "echom 'end;? get matching elem...'
 	  let matching_elem_line_num = s:GetMatchingElemLineNum(a:line_num , b:end_match_words, '\<end\>') 
     "echom 'end;?: match: '.matching_elem_line_num
 	  let this_line_indent = indent(matching_elem_line_num)
+	  let shift_val=0
 
   " if ... else
 	elseif this_unc_line =~ '^\s*else\>' 
@@ -148,12 +155,23 @@ function! GetAbinitioIndent( line_num )
 	  let this_line_indent = indent(matching_elem_line_num)
     let shift_val += &shiftwidth
 
-	" [ ... ]
+	" [...
+	" ]
+	elseif this_unc_line =~ '^\s*\]' 
+    "echom '^] get matching [...'
+	  let matching_elem_line_num = s:GetMatchingElemLineNum(a:line_num ,'\[', '\]') 
+    "echom '^] match: '.matching_elem_line_num
+	  let this_line_indent = indent(matching_elem_line_num)
+	  let shift_val=0
+
+	" [ 
+	" ... ]
 	elseif this_unc_line =~ '^[^\[]*\]' 
     "echom '] get matching [...'
 	  let matching_elem_line_num = s:GetMatchingElemLineNum(a:line_num ,'\[', '\]') 
     "echom '] match: '.matching_elem_line_num
 	  let this_line_indent = indent(matching_elem_line_num)
+    let shift_val += &shiftwidth
 
 	" between [ ] block?
 	elseif this_unc_line =~ ',\s*$' 
