@@ -26,7 +26,7 @@ if exists("g:neosnippet#snippets_directory")
   let g:abinitio#neosnippet_directory = simplify(s:plugin_directory."/../snippets")
   if stridx(string(g:neosnippet#snippets_directory), g:abinitio#neosnippet_directory) < 0
     let g:neosnippet#snippets_directory.=', '.g:abinitio#neosnippet_directory
-    echomsg "get_dir:".string(neosnippet#get_snippets_directory())
+    "echomsg "get_dir:".string(neosnippet#get_snippets_directory())
   endif
 endif
 
