@@ -4,6 +4,26 @@
 " Description:   Vim syntax file for Ab Initio Data Manipulating Language   
 " Created:       24 okt. 2015
 " Project Repo:  https://github.com/Mattia72/vim-abinitio
+" License:       MIT license  {{{
+"   Permission is hereby granted, free of charge, to any person obtaining
+"   a copy of this software and associated documentation files (the
+"   "Software"), to deal in the Software without restriction, including
+"   without limitation the rights to use, copy, modify, merge, publish,
+"   distribute, sublicense, and/or sell copies of the Software, and to
+"   permit persons to whom the Software is furnished to do so, subject to
+"   the following conditions:
+"
+"   The above copyright notice and this permission notice shall be included
+"   in all copies or substantial portions of the Software.
+"
+"   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+"   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+"   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+"   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+"   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+"   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+"   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+" }}}
 "=============================================================================
 
 if exists("b:current_syntax")
@@ -41,8 +61,7 @@ syn match abNumber '\d[[:digit:]]*[eE][\-+]\=\d\+'
 syn match abNumber '[-+]\=\d[[:digit:]]*\.\d*[eE][\-+]\=\d\+'
 syn match abNumber '\d[[:digit:]]*\.\d*[eE][\-+]\=\d\+'
 
-
-syn region	abParen		transparent start='(' end=')' contains=ALLBUT,@Spell
+syn region abParen transparent start='(' end=')' contains=ALLBUT,@Spell
 
 "Variable is: name but not .name
 syn match abVariable "^\<\h[a-zA-Z0-9#_]*\>"
@@ -58,6 +77,11 @@ syn keyword abLet let skipwhite nextgroup=@abTypes
 
 syn keyword abConstant NULL
 
+syn keyword abPreProc include 
+
+syn keyword abKeyword _KEYTYPE_ constant delimiter 
+syn keyword abKeyword member metadata package packed 
+
 syn keyword abCodePage iso_8859_1 iso_8859_2 iso_8859_3 iso_8859_4 iso_8859_5 iso_8859_6 iso_8859_7 iso_8859_8 iso_8859_9 
 syn keyword abCodePage iso_arabic iso_cyrillic iso_easteuropean iso_turkish iso_greek iso_hebrew iso_latin_1 iso_latin_2 iso_latin_3 iso_latin_4 jis_201
 syn keyword abCodePage ascii ebcdic endian euc_jis ibm ieee unicode utf8 big little 
@@ -67,9 +91,6 @@ syn keyword abComponent reformat join rollup normalize denormalize scan
 syn keyword abConditional if else case default
 
 syn keyword abRepeat while for do
-
-syn keyword abKeyword _KEYTYPE_ constant delimiter 
-syn keyword abKeyword member metadata package packed 
 
 syn keyword abBuiltInFunc reformat first_defined reinterpret_as shift_jis 
 syn keyword abBuiltInFunc this_record 
@@ -106,7 +127,6 @@ syn keyword abBuiltInFunc datetime_difference_seconds datetime_from_390_tod date
 syn keyword abBuiltInFunc datetime_month datetime_second datetime_to_unixtime datetime_year datetime_zone_offset decode_date 
 syn keyword abBuiltInFunc decode_date_record decode_datetime decode_datetime_as_local encode_date encode_datetime encode_local_datetime 
 syn keyword abBuiltInFunc local_now now now1 today today1 utc_now 
-syn keyword abPreProc include 
 
 syn keyword abTodo contained TODO FIXME NOTE
 syn match abLineComment "//.*$" contains=abTodo
@@ -152,8 +172,8 @@ if version >= 508 || !exists("did_abinitio_syntax_inits")
   HiLink abLineComment Comment      
   HiLink abComment     Comment      
   HiLink abCommentStart Comment      
-  HiLink abKeyword    Statement    
-  HiLink abBlock       PreProc
+  HiLink abKeyword    Keyword    
+  HiLink abBlock       Type
   HiLink abSwitchBlock Statement 
   HiLink abUnionDef    Structure 
   HiLink abUnionTypeDecl   Type 
