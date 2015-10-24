@@ -1,21 +1,27 @@
 " Vim syntax file
 " Language:           Ab Initio Data Manipulating Language
-" Maintainer:         mattia72
+" Maintainer:         Mattia72
 " Version:            1.0
 " Project Repository: https://github.com/mattia72/vim-abinitio
 " Vim Script Page:    
 
 if exists("b:current_syntax")
-  finish
+"  finish
 endif
 
-syn cluster abNotTop contains=@abSpecial,abTodo
+syn case match
+
+syn cluster abNotTop contains=abSpecial,abTodo
+syn cluster abTypes contains=abType,abRecordType,abVectorType,abUnionType
+syn cluster abTypeDeclContent contains=@abTypes,abKeyword,abString,abConstant,abNumber,abVariable,
+syn cluster abExpression contains=@abTypeDeclContent,abOperator,abColumnName
 
 " Operators
 syn match  abOperator "-=\|/=\|\*=\|&=\|&&\|/=\|||\|%=\|+=\|!\~\|!=\|=="
 syn keyword abOperator or
 syn keyword abOperator and
 syn keyword abOperator not
+"syn match abAssignOp "::"
 
 syn match abSpecial  display contained "\\\(x\x\+\|\o\{1,3}\|.\|$\)"
 syn match abSpecial  display contained '%\(?:\d+\$\)\?[dfsu]'
@@ -40,23 +46,14 @@ syn region	abParen		transparent start='(' end=')' contains=ALLBUT,@Spell
 "Variable is: name but not .name
 syn match abVariable "^\<\h[a-zA-Z0-9#_]*\>"
 syn match abVariable "[^.]\<\h[a-zA-Z0-9#_]*\>"ms=s+1
-syn match abColumnName "\.\<\h[a-zA-Z0-9#_]*\>"ms=s+1
+syn match abColumnName "\.\%(\<\h[a-zA-Z0-9#_]*\>\)\|\%(\*\)"ms=s+1
+syn match abPort "\<\(in\|out\|error\|\(file\)*reject\|log\)\d*\>" nextgroup=abColumnName 
 
-syn keyword abType vector type decimal float string date datetime int integer double short signed union unsigned 
-syn keyword abType real long void skipwhite nextgroup=abParen
+syn keyword abType type  
+syn keyword abType string date datetime short signed unsigned void skipwhite nextgroup=abParen
+syn keyword abType decimal float real long int integer double skipwhite nextgroup=abParen
 
-syn match abPort "\<\(in\|out\|error\|\(file\)*reject\|log\)\d*\>" 
-
-syn keyword abLet let skipwhite nextgroup=abType
-
-syn match  abUnionDef    "\<\(\[\s*union\|\]\)\>"
-syn match  abRecordDef  "\<\(\[\s*record\|\]\)\>"
-syn match  abVectorDef  "\<\(\[\s*vector\|\]\)\>"
-syn match  abUnionType   "\<\(union\|end\)\>"
-syn match  abRecordType "\<\(record\|end\)\>"
-syn match  abVectorType "\<\(vector\|end\)\>"
-syn match  abSwitchBlock     "\<\(switch\|end\)\>"
-syn match  abBlock      "\<\(begin\|end\)\>"
+syn keyword abLet let skipwhite nextgroup=@abTypes
 
 syn keyword abConstant NULL
 
@@ -118,12 +115,25 @@ syn region abComment   matchgroup=abCommentStart start="/\*" end="\*/" contains=
 syn region  abString   start=+L\="+ skip=+\\\\\|\\"+ end=+"+ contains=abSpecial,@Spell extend
 syn region  abString   start=+L\='+ skip=+\\\\\|\\'+ end=+'+ contains=abSpecial,@Spell extend
 
-syn region abVector matchgroup=abVectorDef start="\[\s*\<vector\>" end="\]" contains=ALLBUT,@abNotTop skipempty transparent fold
-syn region abVector matchgroup=abVectorType start="\<vector\>" end="\<end\>" contains=ALLBUT,@abNotTop skipempty transparent fold
-syn region abRecord matchgroup=abRecordDef start="\[\s*\<record\>" end="\]" contains=ALLBUT,@abNotTop skipempty transparent fold
-syn region abRecord matchgroup=abRecordType start="\<record\>" end="\<end\>" contains=ALLBUT,@abNotTop skipempty transparent fold
-syn region abSwitch matchgroup=abSwitchBlock start="\<switch\>" end="\<end\>" contains=ALLBUT,@abNotTop skipempty transparent fold
-syn region abBeginEnd  matchgroup=abBlock start="\<begin\>" end="\<end\>" contains=ALLBUT,@abNotTop skipempty transparent fold 
+syn match  abUnionDef    "\[\s*union\>\|\]"
+syn match  abRecordDef   "\[\s*record\>\|\]"
+syn match  abVectorDef   "\[\s*vector\>\|\]"
+syn match  abUnionTypeDecl   "\<\%(union\|end\)\>"
+syn match  abRecordTypeDecl "\<\%(record\|end\)\>"
+syn match  abVectorTypeDecl "\<\%(vector\|end\)\>"
+syn match  abSwitchBlock     "\<\%(switch\|end\)\>"
+syn match  abBlock      "\<\%(begin\|end\)\>"
+
+" [vector val1, val2 ] [record field "val" ... ] ok
+syn region abVectorVal  matchgroup=abVectorDef     start="\[\s*\<vector\>" end="\]"      contains=ALL fold 
+syn region abUnionVal   matchgroup=abUnionDef      start="\[\s*\<union\>"  end="\]"      contains=ALL fold 
+syn region abRecordVal  matchgroup=abRecordDef     start="\[\s*\<record\>" end="\]"      contains=ALL fold 
+" 
+syn region abVectorType  matchgroup=abVectorTypeDecl start="\<vector\>"    end="\<end\>" contains=ALL fold 
+syn region abUnionType   matchgroup=abUnionTypeDecl  start="\<union\>"     end="\<end\>" contains=ALL fold 
+syn region abRecordType  matchgroup=abRecordTypeDecl start="\<record\>"    end="\<end\>" contains=ALL  fold 
+syn region abSwitch  matchgroup=abSwitchBlock   start="\<switch\>"      end="\<end\>"  contains=ALL fold 
+syn region abBegEnd  matchgroup=abBlock         start="\<begin\>"       end="\<end\>"  contains=ALL fold 
 
 syn sync fromstart
 
@@ -141,15 +151,15 @@ if version >= 508 || !exists("did_abinitio_syntax_inits")
   HiLink abLineComment Comment      
   HiLink abComment     Comment      
   HiLink abCommentStart Comment      
-  HiLink abKeywords    Statement    
+  HiLink abKeyword    Statement    
   HiLink abBlock       PreProc
   HiLink abSwitchBlock Statement 
-  HiLink abUnionDef     Structure 
-  HiLink abUnionType    Type 
+  HiLink abUnionDef    Structure 
+  HiLink abUnionTypeDecl   Type 
   HiLink abRecordDef   Structure 
-  HiLink abRecordType  Type 
+  HiLink abRecordTypeDecl  Type 
   HiLink abVectorDef   Structure 
-  HiLink abVectorType  Type 
+  HiLink abVectorTypeDecl  Type 
   HiLink abBuiltInFunc Function    
   HiLink abPort        Type
   HiLink abVariable    Normal    
@@ -157,6 +167,7 @@ if version >= 508 || !exists("did_abinitio_syntax_inits")
   HiLink abLet         Statement    
   HiLink abNumber      Constant     
   HiLink abOperator    Operator     
+  "HiLink abAssignOp    Normal     
   HiLink abConditional Conditional
   HiLink abConstant    Constant
   HiLink abString      String       
