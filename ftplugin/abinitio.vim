@@ -15,7 +15,7 @@ endif
 let b:did_ftplugin = 1
 
 " This variable is used in indent script also
-let b:end_match_words = '\%(\<begin\>\|\%(\[\)\@<!\s*\<vector\>\|\<union\>\|\<record\>\|\<switch\>\)'
+let b:end_match_words = '\%(\<begin\>\|\%(\[\)\@<!\%(\<vector\>\|\<union\>\|\<record\>\|\<switch\>\)\)'
 
 " For matchit plugin to jump with % to the matching word:
 let b:match_words = b:end_match_words.':\<end\>,\<if\>:\<else\>'
@@ -37,7 +37,7 @@ setlocal formatoptions=tcqro
 " Change the browse dialog on Win32 to show mainly PowerShell-related files
 if has("gui_win32")
 	let b:browsefilter =
-				\ "All Ab Initio Files (*.dml)\t*.dml\n" .
+				\ "All Ab Initio Files (*.dml,*.xfr)\t*.dml;*.xfr\n" .
 				\ "All Files (*.*)\t*.*\n"
 endif
 
