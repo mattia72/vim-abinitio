@@ -1,9 +1,30 @@
-" Vim indent file
-" Language:           Ab Initio Data Manipulating Language
-" Maintainer:         mattia72
-" Version:            1.0
-" Project Repository: https://github.com/mattia72/vim-abinitio
-" Vim Script Page:    
+"=============================================================================
+" File:          abinitio.vim
+" Author:        Mattia72 
+" Description:   Vim indent file for Ab Initio Data Manipulating Language   
+" Created:       24 okt. 2015
+" Project Repo:  https://github.com/Mattia72/vim-abinitio
+" License:       MIT license  {{{
+"   Permission is hereby granted, free of charge, to any person obtaining
+"   a copy of this software and associated documentation files (the
+"   "Software"), to deal in the Software without restriction, including
+"   without limitation the rights to use, copy, modify, merge, publish,
+"   distribute, sublicense, and/or sell copies of the Software, and to
+"   permit persons to whom the Software is furnished to do so, subject to
+"   the following conditions:
+"
+"   The above copyright notice and this permission notice shall be included
+"   in all copies or substantial portions of the Software.
+"
+"   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+"   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+"   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+"   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+"   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+"   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+"   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+" }}}
+"=============================================================================
 
 " Only load this indent file when no other was loaded.
 if exists("b:did_indent")
@@ -42,7 +63,7 @@ endfunction
 
 function! s:RemoveComment(line)
   let prev_unc_line =  substitute(a:line, s:c_comment, "", "")
-  "" "echom "RemCom: ".substitute(prev_unc_line, s:cpp_comment, "", "") 
+   "echom "RemCom: ".substitute(prev_unc_line, s:cpp_comment, "", "") 
   return substitute(prev_unc_line, s:cpp_comment, "", "")
 endfunction
 
@@ -120,11 +141,20 @@ function! GetAbinitioIndent( line_num )
       "echom 'prev line started with: '.'^\s*\%(begin\>\|'.s:ind_line_words.'\>\)\|\%(\[*'.s:ind_block_words.'\>\)'
       let shift_val += &shiftwidth
     endif
-	" Todo: indent to matching parenthesis
-	elseif this_unc_line =~ '\%(^[^\[]*\]\)\|\%(^[^(]*)\)' 
-    "echom 'prev line ended with ; or , or with end, but closing parenthesis' 
-		"let matching_elem_line_num = s:GetMatchingElemLineNum(a:line_num ,'\[', '\]') 
-		"let this_line_indent = indent(matching_elem_line_num)
+	else
+	  let closing_bracket = matchstr(prev_unc_line,'\(\(^[^\[]*\)\zs\]\)\|\(\(^[^(]*\)\zs)\)')
+    "echom 'prev line ended with ; or , or with end, but include closing bracket: '.closing_bracket
+	  if closing_bracket != ""
+      if closing_bracket == ']'
+        let closing_bracket = '\]'
+        let opening_bracket = '\['
+      elseif closing_bracket == ')' 
+        let opening_bracket = '('
+      endif
+		  let matching_elem_line_num = s:GetMatchingElemLineNum(prev_line_num ,opening_bracket, closing_bracket) 
+      "echom 'closing bracket: '.closing_bracket.' match line:'.matching_elem_line_num
+		  return indent(matching_elem_line_num)
+		endif
   endif
 
   " begin
@@ -153,6 +183,12 @@ function! GetAbinitioIndent( line_num )
 	  let matching_elem_line_num = s:GetMatchingElemLineNum(a:line_num ,'\<switch\>','') 
     "echom 'switch match: '.matching_elem_line_num
 	  let this_line_indent = indent(matching_elem_line_num)
+    let shift_val += &shiftwidth
+
+	" and/or 
+	elseif this_unc_line =~ '^\s*\%(and\>\|or\>\)' &&
+      \ prev_unc_line !~# '^\s*\%(and\>\|or\>\)' 
+    "echom 'and/or in the beginning'
     let shift_val += &shiftwidth
 
 	" [...
