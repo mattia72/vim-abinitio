@@ -1,0 +1,10 @@
+snippet     func  
+abbr        dml function definition 
+alias       function fun
+options     head
+ /* ${2} */
+ ${1:port}::${2:function_name}(${3:parameter})=
+ begin
+   ${0:content}
+ end; // end of ${2}
+
