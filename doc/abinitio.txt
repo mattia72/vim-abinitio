@@ -9,19 +9,36 @@ License:    Apache 2.0
 CONTENTS                                                     *abinitio-contents*
 
 Introduction.............................................|abinitio-introduction|
+Install.......................................................|abinitio-install|
 Folding.......................................................|abinitio-folding|
 Indentation...............................................|abinitio-indentation|
 Matchit support...............................................|abinitio-matchit|
 Snippets.....................................................|abinitio-snippets|
 
 ==============================================================================
-INTRODUCTION                                              *abinitio-inroduction*
+INTRODUCTION                                             *abinitio-introduction*
 
 This plugin provides Vim syntax, indent and filetype detection for 
 Ab Initio Data Manipulating Language (aka. DML) files.
 
 Grab the latest version or report a bug on GitHub:
 http://github.com/mattia72/vim-abinitio
+
+==============================================================================
+INSTALL                                                       *abinitio-install*
+
+Copy the included directories into your .vim or vimfiles directory.
+Or even better, use neobundle and simply put this line after your 
+neobundle list in your .vimrc: >
+
+ NeoBundleLazy 'mattia72/vim-abinitio'
+>
+then add this line in your auto commands section: >
+
+ autocmd FileType abinitio NeoBundleSource vim-abinitio
+>
+So the plugin will loaded only if you open a *.dml file or call 
+:set filetype=abinitio.
 
 ==============================================================================
 FOLDING                                                       *abinitio-folding*
