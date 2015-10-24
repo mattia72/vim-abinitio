@@ -1,38 +1,59 @@
-*abinitio.txt*  A Windows Ab Initio syntax plugin for Vim
+*abinitio.txt*   Ab Initio syntax plugin for Vim       Last modified: 23.10.2015
 
-Maintainer: Ákos Mattiassich <mattia72@gmail.com>
-License:    Apache 2.0
 Version:    1.0
+Maintainer: Mattia72 <mattia72@gmail.com>
+License:    Apache 2.0
 
-INTRODUCTION                                                    *abinitio-syntax*
+                    SHORT REFERENCE MANUAL FOR VIM-ABINITIO
+==============================================================================
+CONTENTS                                                     *abinitio-contents*
+
+Introduction.............................................|abinitio-introduction|
+Folding.......................................................|abinitio-folding|
+Indentation...............................................|abinitio-indentation|
+Matchit support...............................................|abinitio-matchit|
+Snippets.....................................................|abinitio-snippets|
+
+==============================================================================
+INTRODUCTION                                              *abinitio-inroduction*
 
 This plugin provides Vim syntax, indent and filetype detection for 
-Ab Initio Data Manipulating Language files.
-
-
-ABOUT                                                           *abinitio-about*
+Ab Initio Data Manipulating Language (aka. DML) files.
 
 Grab the latest version or report a bug on GitHub:
-
 http://github.com/mattia72/vim-abinitio
 
+==============================================================================
+FOLDING                                                       *abinitio-folding*
 
-FOLDING                                                         *abinitio-folding*
+The abinitio syntax file provides syntax folding (see |:syn-fold|) for code blocks.
+When 'foldmethod' is set to "syntax" then begin-end blocks will be folded.
 
-The abinitio syntax file provides syntax folding (see |:syn-fold|) for script blocks
-and digital signatures in scripts.
-
-When 'foldmethod' is set to "syntax" then function script blocks will be
-folded unless you use the following in your .vimrc or before opening a script: >
-
-    :let g:abinitio_nofold_blocks = 1
-<
-Digital signatures in scripts will also be folded unless you use: >
-
-    :let g:abinitio_nofold_sig = 1
-<
 Note: syntax folding might slow down syntax highlighting significantly,
 especially for large files.
 
+==============================================================================
+MATCHIT SUPPORT                                               *abinitio-matchit*
+
+Matchit plugin is supported by defining |b:match_words| variable. The user can 
+switch between 'begin'/'record'/'union' etc. and the corresponding 'end' 
+with %. More info about matchit features in |matchit.txt|.
+
+NOTE: Matchit is part of the standard Vim installation, but it must be
+activated. For instructions type: >
+      :help matchit-install 
+>
+==============================================================================
+INDENTATION                                               *abinitio-indentation*
+
+ggVG=               Indents the whole file
+==                  Indents the current line
+
+==============================================================================
+SNIPPETS                                                     *abinitio-snippets*
+
+See |neosnippet.txt| and <plugin_dir>/vim-abinitio/snippets directory.
+
+
 ------------------------------------------------------------------------------
- vim:ft=help:
+ vim:tw=79:ts=8:ft=help:norl:
