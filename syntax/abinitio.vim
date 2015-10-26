@@ -26,7 +26,12 @@
 " }}}
 "=============================================================================
 
-if exists("b:current_syntax")
+let s:save_cpo = &cpo
+set cpo&vim
+
+if version < 700
+  syntax clear
+elseif exists("b:current_syntax")
   finish
 endif
 
@@ -42,7 +47,7 @@ syn match  abOperator "-=\|/=\|\*=\|&=\|&&\|/=\|||\|%=\|+=\|!\~\|!=\|=="
 syn keyword abOperator or
 syn keyword abOperator and
 syn keyword abOperator not
-"syn match abAssignOp "::"
+syn match abAssignOp "::"
 
 syn match abSpecial  display contained "\\\(x\x\+\|\o\{1,3}\|.\|$\)"
 syn match abSpecial  display contained '%\(?:\d+\$\)\?[dfsu]'
@@ -77,7 +82,7 @@ syn keyword abLet let skipwhite nextgroup=@abTypes
 
 syn keyword abConstant NULL
 
-syn keyword abPreProc include 
+syn keyword abInclude include 
 
 syn keyword abKeyword _KEYTYPE_ constant delimiter 
 syn keyword abKeyword member metadata package packed 
@@ -170,7 +175,7 @@ if version >= 508 || !exists("did_abinitio_syntax_inits")
   endif
   HiLink abTodo        Todo         
   HiLink abLineComment Comment      
-  HiLink abComment     Comment      
+  HiLink abComment     PreProc      
   HiLink abCommentStart Comment      
   HiLink abKeyword    Keyword    
   HiLink abBlock       Type
@@ -188,18 +193,21 @@ if version >= 508 || !exists("did_abinitio_syntax_inits")
   HiLink abLet         Statement    
   HiLink abNumber      Constant     
   HiLink abOperator    Operator     
-  "HiLink abAssignOp    Normal     
+  HiLink abAssignOp    Normal     
   HiLink abConditional Conditional
   HiLink abConstant    Constant
   HiLink abString      String       
   HiLink abRepeat      Repeat       
   HiLink abType        Type         
   HiLink abCodePage    Type         
-  HiLink abPreProc     PreProc      
+  HiLink abInclude     Include      
   HiLink abSpecial     SpecialChar
   delcommand HiLink
 endif
 
 let b:current_syntax = "abinitio"
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
 
 " vim: ts=8
