@@ -70,9 +70,15 @@ syn region abParen transparent start='(' end=')' contains=ALLBUT,@Spell
 
 "Variable is: name but not .name
 syn match abVariable "^\<\h[a-zA-Z0-9#_]*\>"
-syn match abVariable "[^.]\<\h[a-zA-Z0-9#_]*\>"ms=s+1
-syn match abColumnName "\.\%(\<\h[a-zA-Z0-9#_]*\>\)\|\%(\*\)"ms=s+1
-syn match abPort "\<\(in\|out\|error\|\(file\)*reject\|log\)\d*\>" nextgroup=abColumnName 
+syn match abVariable "[^.]\zs\<\h[a-zA-Z0-9#_]*\>"
+syn match abColumnName "\.\zs\%(\<\h[a-zA-Z0-9#_]*\>\|\*\)"
+syn match abPort "\<\%(in\|out\|error\|\(file\)*reject\|log\)\d*\>" nextgroup=abColumnName 
+
+"TODO key specifier 
+syn match abKeySpec "{\<\h[a-zA-Z0-9#_]*\>*}"
+
+"TODO: After abPort.abColumnName '=' is not allowed
+syn match abAssignError display contained "\%(\<\%(in\|out\|error\|\(file\)*reject\|log\)\d*\>\.\%(\<\h[a-zA-Z0-9#_]*\>\|\*\)\s*\)\zs=" 
 
 syn keyword abType type  
 syn keyword abType string date datetime short signed unsigned void skipwhite nextgroup=abParen
@@ -188,6 +194,7 @@ if version >= 508 || !exists("did_abinitio_syntax_inits")
   HiLink abVectorTypeDecl  Type 
   HiLink abBuiltInFunc Function    
   HiLink abPort        Type
+  HiLink abKeySpec     Identifier
   HiLink abVariable    Normal    
   HiLink abColumnName  Identifier    
   HiLink abLet         Statement    
@@ -202,6 +209,7 @@ if version >= 508 || !exists("did_abinitio_syntax_inits")
   HiLink abCodePage    Type         
   HiLink abInclude     Include      
   HiLink abSpecial     SpecialChar
+  HiLink abAssignError Error
   delcommand HiLink
 endif
 
