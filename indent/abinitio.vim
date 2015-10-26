@@ -30,8 +30,16 @@
 if exists("b:did_indent")
   finish
 endif
-
 let b:did_indent = 1
+
+let s:save_cpo = &cpo
+set cpo&vim
+
+if !exists('b:undo_indent')
+    let b:undo_indent = ''
+else
+    let b:undo_indent = '|'
+endif
 
 setlocal indentexpr=GetAbinitioIndent(v:lnum)
 setlocal indentkeys&
@@ -39,8 +47,6 @@ setlocal indentkeys+==end,==begin,==;
 setlocal indentkeys+==if,==else,==switch,==case,==default,
 setlocal indentkeys+==while,==for 
 setlocal indentkeys+==vector,==record,==union,==type
-
-setlocal cindent
 
 if exists("*GetAbinitioIndent")
   finish
@@ -235,3 +241,9 @@ function! GetAbinitioIndent( line_num )
 	return this_line_indent + shift_val
 endfunction    
 
+let b:undo_indent .= '
+    \ setlocal indentexpr< indentkeys<
+    \'
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
