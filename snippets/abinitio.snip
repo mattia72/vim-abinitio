@@ -2,9 +2,56 @@ snippet     func
 abbr        dml function definition 
 alias       function fun
 options     head
- /* ${2} */
- ${1:port}::${2:function_name}(${3:parameter})=
+  /* ${1:description} */
+ ${2:port}::${3:function_name}(${4:parameter})=
  begin
    ${0:content}
- end; // end of ${2}
+ end; // end of ${3}
+
+snippet     type  
+abbr        dml type definition 
+options     head
+  type ct_${1:name}_t = record
+    ${0:content}
+  end; 
+
+snippet     dec  
+alias       decimal deci
+options     word
+  decimal('\0') ${0}
+
+snippet     decn  
+alias       decimaln decin
+options     word
+  decimal(${1:number}) ${0}
+
+snippet     decd
+alias       decimald decid
+options     word
+  decimal("${1:delimiter}") ${0}
+
+snippet     str
+alias       string stri
+options     word
+  string('\0') ${0}
+
+snippet     strn
+alias       stringn strin
+options     word
+  string(${1:number}) ${0}
+
+snippet     strd
+alias       stringd strid
+options     word
+  string("${1:delimiter}") ${0}
+
+snippet     date8
+alias       dat8 da8 
+options     word
+  date("YYYYMMDD") ${0}
+
+snippet     date14
+alias       datet14 datetime14 
+options     word
+  datetime("YYYYMMDDHH24MISS") ${0}
 
