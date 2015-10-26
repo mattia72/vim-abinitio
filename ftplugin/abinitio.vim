@@ -26,6 +26,15 @@
 " }}}
 "=============================================================================
 
+let s:save_cpo = &cpo
+set cpo&vim
+
+if !exists('b:undo_ftplugin')
+  let b:undo_ftplugin = ''
+else
+  let b:undo_ftplugin = '|'
+endif
+
 " Only do this when not done yet for this buffer
 if exists("b:did_ftplugin") 
   finish  
@@ -54,7 +63,7 @@ setlocal textwidth=0
 setlocal commentstring=//%s
 setlocal formatoptions=tcqro
 
-" Change the browse dialog on Win32 to show mainly PowerShell-related files
+" Change the browse dialog on Win32 to show mainly Ab Initio related files
 if has("gui_win32")
 	let b:browsefilter =
 				\ "All Ab Initio Files (*.dml,*.xfr)\t*.dml;*.xfr\n" .
@@ -62,6 +71,10 @@ if has("gui_win32")
 endif
 
 " Undo the stuff we changed
-let b:undo_ftplugin = "setlocal tw< cms< fo< isk< " .
-			\ " | unlet! b:browsefilter"
+let b:undo_ftplugin .= "
+      \ setlocal textwidth< commentstring< formatoptions<  
+      \ | unlet! b:browsefilter b:match_words b:end_match_words"
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
 
