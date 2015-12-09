@@ -141,6 +141,8 @@ function! GetAbinitioIndent( line_num )
 
 	" If the previous line hasn't ";" or "end" in the end ...
   "echom ' ---prev_unc_line: '.prev_unc_line
+  "TODO: if prev_unc_line !~# '\%(?\|:\)\s*$'
+
   if prev_unc_line !~# '\%(;\|,\|\<end\>\)\s*$'
     "echom 'prev line not ended with ; or , or with end;?' 
     if prev_unc_line =~ '^\s*\%(begin\>\|'.s:ind_line_words.'\>\)\|\%(\[*'.s:ind_block_words.'\>\)' 
