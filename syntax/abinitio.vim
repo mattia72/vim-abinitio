@@ -147,9 +147,9 @@ syn region abComment   matchgroup=abCommentStart start="/\*" end="\*/" contains=
 syn region  abString   start=+L\="+ skip=+\\\\\|\\"+ end=+"+ contains=abSpecial,@Spell extend
 syn region  abString   start=+L\='+ skip=+\\\\\|\\'+ end=+'+ contains=abSpecial,@Spell extend
 
-syn match  abUnionDef    "\[\s*union\>\|\]"
-syn match  abRecordDef   "\[\s*record\>\|\]"
-syn match  abVectorDef   "\[\s*vector\>\|\]"
+syn match  abUnionDef    "\[\s*union\>.*\]"
+syn match  abRecordDef   "\[\s*record\>.*\]"
+syn match  abVectorDef   "\[\s*vector\>.*\]"
 syn match  abUnionTypeDecl   "\<\%(union\|end\)\>"
 syn match  abRecordTypeDecl "\<\%(record\|end\)\>"
 syn match  abVectorTypeDecl "\<\%(vector\|end\)\>"
