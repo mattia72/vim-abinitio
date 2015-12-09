@@ -23,6 +23,18 @@ Indentation works well (in most cases :))
 `b:match_words` contains matching words to jump between "begin" and "end" or
 "record" and "end" with %
 
+## Neosnippet support
+For this feature you need to install [neosnippet](http://github.com/Shougo/neosnippet.vim "Neosnippet").
+
+The snippet file should loaded automatically, if not, you can load it by:
+```
+:NeoSnippetSource <path_to_the_vim-abinitio_plugin>\snippets\abinitio.snip
+```    
+Then you can start type a snippet alias eg. `func`. 
+* `C-k` selects and expands a snippet from the [neocomplcache](https://github.com/Shougo/neocomplcache.vim)/ [neocomplete](https://github.com/Shougo/neocomplete.vim) popup (Use `C-n` and `C-p` to select it). 
+* `C-k` can be used to jump to the next field in the snippet.
+* `Tab` to select the next field to fill in the snippet.
+
 ## Thanks
 * for the first inspiration: https://sites.google.com/site/abinitiobyte/
 * for this indent script howto: http://psy.swansea.ac.uk/staff/Carter/Vim/vim_indent.htm
