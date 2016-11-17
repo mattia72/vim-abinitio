@@ -69,7 +69,7 @@ endfunction
 
 function! s:RemoveComment(line)
   let prev_unc_line =  substitute(a:line, s:c_comment, "", "")
-   "echom "RemCom: ".substitute(prev_unc_line, s:cpp_comment, "", "") 
+   ""echom "RemCom: ".substitute(prev_unc_line, s:cpp_comment, "", "") 
   return substitute(prev_unc_line, s:cpp_comment, "", "")
 endfunction
 
@@ -120,7 +120,7 @@ function! GetAbinitioIndent( line_num )
 
 	let this_line = getline( a:line_num )
 	
-	" Todo: If in the middle of a three-part comment, this check is not enough!
+	" TODO: If in the middle of a three-part comment, this check is not enough!
 	if this_line =~ '^\s*\*' | return indent( a:line_num ) | endif
 
 	let prev_line_num = s:GetPrevNonCommentLineNum( a:line_num )
@@ -133,7 +133,8 @@ function! GetAbinitioIndent( line_num )
 
 	let this_unc_line = s:RemoveComment(this_line)
 	" Function definitions have nothing before or after (not even a comment), and go on column 0. 
-	if this_line =~ '^\s*\%(\h\+\)*\s*\%(\%(\h\+\d*\s*\)*\)*\s*::\s*\h\+(.*)\s*=\s*$'
+	if this_line =~ '^\s*\%(\h\+\)*\s*\%(\%(\h\+\d*\s*\)*\)*\s*::\s*\h\+(.*)\s*=\s*\%(\<begin\>\)\?\s*$'
+	  "echom 'Function definition! return 0' 
 		return 0
 	endif
 
@@ -145,13 +146,13 @@ function! GetAbinitioIndent( line_num )
 
   if prev_unc_line !~# '\%(;\|,\|\<end\>\)\s*$'
     "echom 'prev line not ended with ; or , or with end;?' 
-    if prev_unc_line =~ '^\s*\%(begin\>\|'.s:ind_line_words.'\>\)\|\%(\[*'.s:ind_block_words.'\>\)' 
-      "echom 'prev line started with: '.'^\s*\%(begin\>\|'.s:ind_line_words.'\>\)\|\%(\[*'.s:ind_block_words.'\>\)'
+    if prev_unc_line =~ '^\s*\%(.*=\s*\)\?\%(begin\>\|'.s:ind_line_words.'\>\)\|\%(\[*'.s:ind_block_words.'\>\)' 
+      "echom 'prev line started with: '.'^\s*\%(.*=\s*\)\?\%(begin\>\|'.s:ind_line_words.'\>\)\|\%(\[*'.s:ind_block_words.'\>\)'
       let shift_val += &shiftwidth
     endif
 	else
 	  let closing_bracket = matchstr(prev_unc_line,'\(\(^[^\[]*\)\zs\]\)\|\(\(^[^(]*\)\zs)\)')
-    "echom 'prev line ended with ; or , or with end, but include closing bracket: '.closing_bracket
+    "echom 'prev line ended with ; or , or with end, includes closing bracket? : '.closing_bracket
 	  if closing_bracket != ""
       if closing_bracket == ']'
         let closing_bracket = '\]'
@@ -167,7 +168,8 @@ function! GetAbinitioIndent( line_num )
 
   " begin
   if this_unc_line =~ '^\s*begin\>\s*$' 
-      return this_line_indent
+    "echom 'This line is only a begin'
+    return this_line_indent
   endif
 
   " begin/vector/union/record/switch ... end
@@ -225,7 +227,8 @@ function! GetAbinitioIndent( line_num )
 	  let this_line_indent = indent(matching_elem_line_num)
     let shift_val += &shiftwidth
 
-  elseif this_unc_line =~ ';\s*$'
+  " ) or ; on the end
+  elseif this_unc_line =~ '[;)]\s*$'
     let prev_prev_line = s:RemoveComment(getline(prevnonblank(prev_line_num - 1)))
     "echom 'ppline: '.prev_prev_line
     if prev_prev_line =~ '^\s*\%('.s:ind_line_words.'\>\)' && 
@@ -233,6 +236,9 @@ function! GetAbinitioIndent( line_num )
       "echom 'prev not begin but but pp indenting word: '.prev_prev_line
       let shift_val -= &sw      
     endif
+
+  else
+    "echom 'Not to indent'
 
 	endif
 
