@@ -18,10 +18,16 @@ So the plugin will loaded only if you open a *.dml file or call `set filetype=ab
 
 ## Indent
 Indentation works well (in most cases :)) 
+![Screenshot](/../screenshot/align.gif?raw=true "Aligning")
+
+1. Select the lines you wan't to indent. (eg.`V%`)
+2. Push `=`
 
 ## Matchit support
 `b:match_words` contains matching words to jump between "begin" and "end" or
 "record" and "end" with %
+
+## Tabularize
 
 ## Neosnippet support
 For this feature you need to install [neosnippet](http://github.com/Shougo/neosnippet.vim "Neosnippet").

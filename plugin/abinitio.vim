@@ -27,12 +27,25 @@ set cpo&vim
       "\ get(g:, 'vim_abinito_auto_open', 1)
 " Global options defintion. }}}
 
+" Autocommands {{{
 " augroup vim_abinito_global_command_group
 "   autocmd!
 " augroup END
+" Autocommands }}}
 
 " Define commands to operate vim-abinitio
-command! abinitio#DmlFileLineCount       : echom line('$')
+function! g:abinitio#DmlFileLineCount(...)
+  echomsg string(line('$'))
+endfunction
+
+if exists(':Tabularize')
+  " Align selected assignes in nice columns
+  vnoremap <buffer> <silent> <leader>t= :Tabularize /=<CR>
+  vnoremap <buffer> <silent> <leader>t: :Tabularize /::<CR>
+else 
+  " Align selected assignes in nice columns
+  vnoremap <buffer> <silent> <C-S> :!column -t<CR>
+endif
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

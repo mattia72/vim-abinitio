@@ -1,6 +1,11 @@
-//#######################################################################################
-//      Ab Initio Data Manipulation Language (DML) functions
-//#######################################################################################
+/* 
+ * Ab Initio Data Manipulation Language (DML) functions
+ */
+
+include "${AI_DML}/utils.dml"
+
+// line comment
+let float(2) f_num=0.0;
 
 out::get_xvalue(xml_element_var , in) =
 begin
@@ -11,18 +16,18 @@ end ;
 natural_keys_type out::get_natural_keys(xml_element_var) =
 begin
   let xml_element natural_keys = xml_get_element(xml_element_var, "natural_keys" );
-  out.batch_id :: xml_get_element(natural_keys, "batch_id").cdata ;
-  out.prcs_id :: xml_get_element(natural_keys, "prcs_id").cdata ;
-  out.otpt_nm :: xml_get_element(natural_keys, "otpt_nm").cdata ;
-  out.run_ts :: xml_get_element(natural_keys, "run_ts").cdata ;
+  out.batch_id :: xml_get_element(natural_keys,  "batch_id").cdata  ;
+  out.prcs_id  :: xml_get_element(natural_keys,  "prcs_id").cdata   ;
+  out.otpt_nm  :: xml_get_element(natural_keys,  "otpt_nm").cdata   ;
+  out.run_ts   :: xml_get_element(natural_keys,  "run_ts").cdata    ;
 end ;
 
 out::get_update_where_clause_sql(string('')  join_key)=
 begin
   let string('')[integer(4)] var = allocate();
-  let string('') mstr = '';
-  let is_and = '';
-  let int i = 0;
+  let string('') mstr            = '';
+  let is_and                     = '';
+  let int i                      = 0;
 
   var = string_split(string_downcase(join_key)," ");
   for ( i , i< length_of(var))
@@ -35,25 +40,27 @@ end;
 
 out::get_update_table_sql(string('') database_name , string('') table_name , string('') dml_file, string('') join_key) =
 begin
-  let string('')  result_ = "update " + database_name + "." + table_name + " set \n";
-  let string('') [int] name_str = allocate() ;
+  let string('')  result_= "update " + database_name + "." + table_name + " set \n";
+  let string('') [int] name_str= allocate() ;
   let dml_field_info_vec dml_info_vec = allocate();
-  let int i = 0 ;
+  let int i= 0 ;
   dml_info_vec = record_info(read_type(dml_file));
   name_str = for ( i , i < length_of(dml_info_vec))   : dml_info_vec[i].name;
   for ( i , i < length_of(name_str))
   begin
-    if ( name_str[i] != "newline" )
-    begin
-      if ( i == 0 )
-        result_ =  result_ + name_str[i] + "= :" + name_str[i] + "\n";
-      else
-        result_ =  result_ + "," + name_str[i] + "= :" + name_str[i] + "\n";
-    end
+  if ( name_str[i] != "newline" )
+  begin
+  if ( i == 0 )
+    result_ =  result_ + name_str[i] + "= :" + name_str[i] + "\n";
+  else
+    result_ =  result_ + "," + name_str[i] + "= :" + name_str[i] + "\n";
+  end
   end //end of for
   result_ = result_ + "\n" + "where \n" + get_update_where_clause_sql(join_key);
   result_ = result_ + ";";
+  
   out :: result_;
+
 end;
 
 out::get_update_column_sql(string('') database_name , string('') table_name , string('') dml_file, string(int) update_cols, string('') join_key) =
