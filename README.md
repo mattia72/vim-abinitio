@@ -25,9 +25,15 @@ Indentation works well (in most cases :))
 
 ## Matchit support
 `b:match_words` contains matching words to jump between "begin" and "end" or
-"record" and "end" with %
+"record" and "end" with `%`
 
-## Tabularize
+## Tabular
+To format lines, that assigns values (contains `=` or `::`), we can use the 
+famous [tabular](http://github.com/godlygeek/tabular) plugin.
+[vim-abinitio] (http://github.com/mattia72/vim-abinitio) maps the appropriate
+commands for you.
+* `<leader>t=` 
+* `<leader>t:` 
 
 ## Neosnippet support
 For this feature you need to install [neosnippet](http://github.com/Shougo/neosnippet.vim "Neosnippet").
