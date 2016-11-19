@@ -11,6 +11,7 @@ Or better to use a plugin manager, like
 [dein](http://github.com/Shougo/dein.vim "Dein"). Put this lines in your
 plugin list:
 ```
+call dein#add('Shougo/neosnippet')      " Recommended  
 call dein#add('godlygeek/tabular',     
       \{ 'on_cmd' : 'Tabularize' })     " Recommended 
 call dein#add('mattia72/vim-abinitio' , 
@@ -29,7 +30,6 @@ then add this line in your auto commands section:
 autocmd FileType abinitio NeoBundleSource vim-abinitio
 ```
 So the plugin will loaded only if you open a *.dml file or call `set filetype=abinitio`.
-
 
 ## Syntax highlight
 ![Screenshot](/../screenshot/screenshot.png?raw=true "Screenshot")
@@ -65,8 +65,7 @@ Then you can start type a snippet alias eg. `func`.
 * `C-k` can be used to jump to the next field in the snippet.
 * `Tab` to select the next field to fill in the snippet.
 
-
-
+Available snippets are in the snippets directory. Feel free to extend them.
 
 ## Thanks
 * for the first inspiration: https://sites.google.com/site/abinitiobyte/
