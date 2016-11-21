@@ -182,7 +182,7 @@ if version >= 508 || !exists("did_abinitio_syntax_inits")
   HiLink abTodo        Todo         
   HiLink abLineComment Comment      
   HiLink abComment     PreProc      
-  HiLink abCommentStart Comment      
+  HiLink abCommentStart PreProc      
   HiLink abKeyword    Keyword    
   HiLink abBlock       Type
   HiLink abSwitchBlock Statement 
