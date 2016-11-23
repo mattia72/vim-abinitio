@@ -13,8 +13,7 @@ begin
 end ;
 
 
-natural_keys_type out::get_natural_keys(xml_element_var) =
-begin
+natural_keys_type out::get_natural_keys(xml_element_var) = begin
   let xml_element natural_keys = xml_get_element(xml_element_var, "natural_keys" );
   out.batch_id :: xml_get_element(natural_keys,  "batch_id").cdata  ;
   out.prcs_id  :: xml_get_element(natural_keys,  "prcs_id").cdata   ;
@@ -22,16 +21,15 @@ begin
   out.run_ts   :: xml_get_element(natural_keys,  "run_ts").cdata    ;
 end ;
 
-out::get_update_where_clause_sql(string('')  join_key)=
-begin
+out::get_update_where_clause_sql(string('')  join_key)= begin
   let string('')[integer(4)] var = allocate();
   let string('') mstr            = '';
   let is_and                     = '';
   let int i                      = 0;
+  let float('') f_num            = 100.5;
 
   var = string_split(string_downcase(join_key)," ");
-  for ( i , i< length_of(var))
-  begin
+  for ( i , i< length_of(var)) begin
     mstr = string_concat(mstr, var[i], "= :",var[i], (i < (length_of(var) - 1)) ?" and\n" : " \n" );
   end
 
@@ -48,17 +46,17 @@ begin
   name_str = for ( i , i < length_of(dml_info_vec))   : dml_info_vec[i].name;
   for ( i , i < length_of(name_str))
   begin
-  if ( name_str[i] != "newline" )
-  begin
-  if ( i == 0 )
-    result_ =  result_ + name_str[i] + "= :" + name_str[i] + "\n";
-  else
-    result_ =  result_ + "," + name_str[i] + "= :" + name_str[i] + "\n";
-  end
+    if ( name_str[i] != "newline" )
+    begin
+      if ( i == 0 )
+        result_ =  result_ + name_str[i] + "= :" + name_str[i] + "\n";
+      else
+        result_ =  result_ + "," + name_str[i] + "= :" + name_str[i] + "\n";
+    end
   end //end of for
   result_ = result_ + "\n" + "where \n" + get_update_where_clause_sql(join_key);
   result_ = result_ + ";";
-  
+
   out :: result_;
 
 end;
@@ -120,11 +118,8 @@ begin
   dml_info_vec = record_info(read_type(dml_file));
   name_str = for ( i , i < length_of(dml_info_vec))   : dml_info_vec[i].name;
 
-  for ( i , i < length_of(name_str))
-  begin
-
-    if ( name_str[i] != "newline" )
-    begin
+  for ( i , i < length_of(name_str)) begin
+    if ( name_str[i] != "newline" ) begin
       if ( i == 0 )
         result_ =  result_ + name_str[i] + "\n";
       else
@@ -134,15 +129,14 @@ begin
   result_ = result_ + ")\n";
 	result_ = result_ + "values \n(";
 
-	for ( i , i < length_of(name_str))
-	begin
-
-	  if ( name_str[i] != "newline" )
+	for ( i , i < length_of(name_str)) begin
+    if ( name_str[i] != "newline" )
 	  begin
 	    if ( i == 0 )
 	      result_ =  result_ + ":" +  name_str[i] + "\n";
 	    else
 	      result_ =  result_ + "," + ":" +  name_str[i] + "\n";
+	    result_ =  result_ ;
 	  end
 	end //end of for
 
@@ -175,14 +169,14 @@ end;
 out::is_project_config_file_present(dir) =
 begin
   out::if (("project" + ".cfg")
-  member directory_listing(dir)) 1 else 0 ;
+    member directory_listing(dir)) 1 else 0 ;
 end;
 
 
 out::is_graph_config_file_present(dir,graph_name) =
 begin
   out::if ((graph_name + ".cfg")
-  member directory_listing(dir)) 1 else 0 ;
+    member directory_listing(dir)) 1 else 0 ;
 end;
 
 
@@ -216,10 +210,10 @@ end;
 out::get_paramter_value(config_param, graph_param) =
 begin
   out :: if (!is_blank(graph_param))
-  graph_param else
-  if (parse_config_file("/home/u440233/sand/xfr" + "/" + "project" + ".cfg","SLEEP").found)
-    parse_config_file("/home/u440233/sand/xfr" + "/" + "project"  + ".cfg","SLEEP").config_value
-  else "";
+    graph_param else
+      if (parse_config_file("/home/u440233/sand/xfr" + "/" + "project" + ".cfg","SLEEP").found)
+        parse_config_file("/home/u440233/sand/xfr" + "/" + "project"  + ".cfg","SLEEP").config_value
+      else "";
 end;
 
 out::record_to_string(input) =
@@ -246,8 +240,11 @@ end;
 out::create(index) = begin
   let string('\0') Type = [vector 'W1', 'W2', 'W4', 'W5'][index];
   out.Child.Type ::Type;
-  if(Type == "W1")
+  if(Type == "W1") begin
     out.Child.W1 :: random_value();  
+    out.Child.Weiß2 :: NULL;
+    out.Child.Wäöüóúűőéá4 :: NULL;
+  end
   if(Type == "W2")
     out.Child.W2 :: random_value(); 
   if(Type == "W4")
