@@ -67,6 +67,12 @@ Then you can start type a snippet alias eg. `func`.
 
 Available snippets are in the snippets directory. Feel free to extend them.
 
+## How to use it from AbInitio GDE?
+ 1. Download the exe file from here: [AbInitioPlus](https://github.com/mattia72/autohotkey/blob/master/AbInitioPlus/win32/AbInitioPlus.exe "Exe")
+ 2. Start it!
+ 3. Open an editor in GDE.
+ 4. Push the corresponding [hotkey](https://github.com/mattia72/autohotkey/tree/master/AbInitioPlus#hotkeys "hotkeys")
+
 ## Thanks
 * for the first inspiration: https://sites.google.com/site/abinitiobyte/
 * for this indent script howto: http://psy.swansea.ac.uk/staff/Carter/Vim/vim_indent.htm
