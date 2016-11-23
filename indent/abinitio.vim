@@ -146,8 +146,8 @@ function! GetAbinitioIndent( line_num )
 
   if prev_unc_line !~# '\%(;\|,\|\<end\>\)\s*$'
     "echom 'prev line not ended with ; or , or with end;?' 
-    if prev_unc_line =~ '^\s*\%(.*=\s*\)\?\%(begin\>\|'.s:ind_line_words.'\>\)\|\%(\[*'.s:ind_block_words.'\>\)' 
-      "echom 'prev line started with: '.'^\s*\%(.*=\s*\)\?\%(begin\>\|'.s:ind_line_words.'\>\)\|\%(\[*'.s:ind_block_words.'\>\)'
+    if prev_unc_line =~ '^\s*\%(.*\)\%(=\s*\)\?\%(begin\>\|'.s:ind_line_words.'\>\)\|\%(\[*'.s:ind_block_words.'\>\)' 
+      "echom 'prev line started with: '.'^\s*\%(.*\)\%(=\s*\)\?\%(begin\>\|'.s:ind_line_words.'\>\)\|\%(\[*'.s:ind_block_words.'\>\)' 
       let shift_val += &shiftwidth
     endif
 	else
@@ -232,8 +232,9 @@ function! GetAbinitioIndent( line_num )
     let prev_prev_line = s:RemoveComment(getline(prevnonblank(prev_line_num - 1)))
     "echom 'ppline: '.prev_prev_line
     if prev_prev_line =~ '^\s*\%('.s:ind_line_words.'\>\)' && 
-      \ prev_unc_line !~# '^\s*begin\>\s*$' " && prev_unc_line !~# ';\s*$'
-      "echom 'prev not begin but but pp indenting word: '.prev_prev_line
+          \ prev_prev_line !~# '^.*begin\>\s*$' &&  
+          \ prev_unc_line !~# '^\s*begin\>\s*$' " && prev_unc_line !~# ';\s*$'
+      "echom 'prev not begin but but pp indenting word and not begin: '.prev_prev_line
       let shift_val -= &sw      
     endif
 
