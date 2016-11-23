@@ -38,14 +38,27 @@ function! g:abinitio#DmlFileLineCount(...)
   echomsg string(line('$'))
 endfunction
 
+
 if exists(':Tabularize')
   " Align selected assignes in nice columns
   vnoremap <buffer> <silent> <leader>t= :Tabularize /=<CR>
   vnoremap <buffer> <silent> <leader>t: :Tabularize /::<CR>
 else 
-  " Align selected assignes in nice columns
-  vnoremap <buffer> <silent> <C-S> :!column -t<CR>
+  " Align lines by words in nice columns
+  vnoremap <buffer> <silent> <leader>t= :!column -t<CR>
+  vnoremap <buffer> <silent> <leader>t: :!column -t<CR>
 endif
+
+" Align lines by words in nice columns
+vnoremap <buffer> <silent> <leader>at :!column -t<CR>
+
+set foldmethod=syntax
+
+" select inside record:
+vnoremap af :<C-U>silent! normal! [zV]k<CR>
+vnoremap if :<C-U>silent! normal! [zjV]zk<CR>
+omap af :normal Vaf<CR>
+omap if :normal Vif<CR>
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
