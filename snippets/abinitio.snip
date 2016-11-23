@@ -34,17 +34,17 @@ options     head
   end; 
 
 snippet     if
-abbr        if selected block
-options     word indent
-  if (${1:var}) begin
-    ${0:TARGET}
-  end
-
-snippet     if
 abbr        if new block
 options     word indent
   if (${1:var}) begin
     ${0}
+  end
+
+snippet     ifs
+abbr        if selected block
+options     word indent
+  if (${1:var}) begin
+    ${0:TARGET}
   end
 
 snippet     ifn
