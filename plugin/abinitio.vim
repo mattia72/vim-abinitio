@@ -39,26 +39,29 @@ function! g:abinitio#DmlFileLineCount(...)
 endfunction
 
 
+
+set foldmethod=syntax
+" folds are closed initially
+set foldlevelstart=99
+
+" select inside a begin-end block:
+vnoremap af :<C-U>silent! normal! [zV]z<CR>
+vnoremap if :<C-U>silent! normal! [zjV]zk<CR>
+omap af :normal Vaf<CR>
+omap if :normal Vif<CR>
+
 if exists(':Tabularize')
-  " Align selected assignes in nice columns
+  " Align selected assignes in nice columns with plugin
   vnoremap <buffer> <silent> <leader>t= :Tabularize /=<CR>
   vnoremap <buffer> <silent> <leader>t: :Tabularize /::<CR>
 else 
-  " Align lines by words in nice columns
+  " Align lines by words in nice columns with external program
   vnoremap <buffer> <silent> <leader>t= :!column -t<CR>
   vnoremap <buffer> <silent> <leader>t: :!column -t<CR>
 endif
 
 " Align lines by words in nice columns
 vnoremap <buffer> <silent> <leader>at :!column -t<CR>
-
-set foldmethod=syntax
-
-" select inside record:
-vnoremap af :<C-U>silent! normal! [zV]k<CR>
-vnoremap if :<C-U>silent! normal! [zjV]zk<CR>
-omap af :normal Vaf<CR>
-omap if :normal Vif<CR>
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
